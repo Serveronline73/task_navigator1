@@ -1,105 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:task_navigator/screen_one.dart';
+import 'package:task_navigator/screen_three.dart';
+import 'package:task_navigator/screen_two.dart';
 
 void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
 
+class _MainAppState extends State<MainApp> {
+  final List<Widget> widgets = [
+    const ScreenOne(),
+    const ScreenTwo(),
+    const ScreenThree(),
+  ];
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text("MyApp"),
-          backgroundColor: Colors.lime,
-        ),
-        body: const Center(),
-        bottomNavigationBar: NavigationBar(destinations: const [
-          NavigationDestination(icon: Icon(Icons.newspaper), label: "News"),
-          NavigationDestination(icon: Icon(Icons.heart_broken), label: "Likes"),
-          NavigationDestination(icon: Icon(Icons.person), label: "Profil")
-        ]),
-      ),
-    );
-  }
-}
-
-class ScreenThree extends StatelessWidget {
-  const ScreenThree({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        children: [
-          SizedBox(height: 10),
-          Text(
-            "Profile",
-            style: TextStyle(fontSize: 30),
-          ),
-          SizedBox(height: 20),
-          Text(
-            "Max Mustermann",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          Icon(Icons.person),
-        ],
-      ),
-    );
-  }
-}
-
-class ScreenTwo extends StatelessWidget {
-  const ScreenTwo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-        child: Column(
-      children: [
-        Text(
-          "Likes",
-          style: TextStyle(
-            fontSize: 30,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          "Hier findest du deine gelikten Nachrichten",
-          style: TextStyle(fontSize: 25),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ));
-  }
-}
-
-class ScreenOne extends StatelessWidget {
-  const ScreenOne({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "News",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: currentIndex,
+          onDestinationSelected: (int index) {
+            print(index);
+            currentIndex = index;
+            setState(() {});
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.house),
+              label: "News",
             ),
-            Icon(Icons.newspaper),
-          ]),
+            NavigationDestination(
+              icon: Icon(Icons.newspaper),
+              label: "Likes",
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person),
+              label: "Profile",
+            ),
+          ],
+        ),
+        body: widgets[currentIndex],
+      ),
     );
   }
 }
